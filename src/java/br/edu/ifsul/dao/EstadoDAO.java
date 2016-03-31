@@ -94,5 +94,26 @@ public class EstadoDAO {
             return false;
         }
     }
+    
+    public boolean remover(Estado obj) {
+        try {
+            em.getTransaction().begin();
+            em.remove(obj);
+            em.getTransaction().commit();
+            mensagem = "Objeto removido";
+            return true;
+        } catch (Exception e) {
+            if (em.getTransaction().isActive() == false) {
+                em.getTransaction().begin();
+            }
+            em.getTransaction().rollback();
+            mensagem = "Erro ao remover objeto: " + Util.getMensagemErro(e);
+            return false;
+        }
+    }
+    
+    public Estado localizar(Integer id){
+        return em.find(Estado.class, id);
+    }
 
 }
